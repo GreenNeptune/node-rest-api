@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const Quote = require('../models/quote')
 
 //  get list of quotes 
 router.get('/quotes', (req, res) => {
@@ -9,12 +10,15 @@ router.get('/quotes', (req, res) => {
 
 // get quote by id 
 router.get('/quotes/:id', (req, res) => {
-  res.send({type:'GET'})
+  res.send({ type: 'GET' })
 })
 
-// create quote 
+// add quote to db 
 router.post('/quotes', (req, res) => {
-  res.send({type:'POST'})
+  // saving quote document to db
+  Quote.create(req.body).then(quote => {
+    res.send(quote)
+  });
 });
 
 // update quote
