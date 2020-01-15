@@ -2,8 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-//  crete quote schema 
-
+//  create quote schema 
 const QuoteSchema = new Schema({
   author: {
     type: String,
