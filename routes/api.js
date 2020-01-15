@@ -40,7 +40,10 @@ router.put('/quotes/:id', (req, res) => {
 
 // delete quote 
 router.delete('/quotes/:id', (req, res) => {
-  res.send({ type: 'DELETE' });
+  const { id } = req.params
+  Quote.findByIdAndRemove({ _id: id }).then(quote => {
+    res.send(quote)
+  });
 });
 
 
