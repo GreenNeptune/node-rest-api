@@ -4,7 +4,9 @@ const Quote = require('../models/quote')
 
 //  get list of quotes 
 router.get('/quotes', (req, res) => {
-  res.send({ type: 'GET' })
+  Quote.find().then(quotes => {
+    res.send(quotes)
+  })
 })
 
 
