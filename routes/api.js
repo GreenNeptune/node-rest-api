@@ -12,7 +12,10 @@ router.get('/quotes', (req, res) => {
 
 // get quote by id 
 router.get('/quotes/:id', (req, res) => {
-  res.send({ type: 'GET' })
+  const { id } = req.params;
+  Quote.findById({ "_id": id }).then(quote => {
+    res.send(quote);
+  });
 })
 
 // add quote to db 
