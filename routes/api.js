@@ -28,7 +28,14 @@ router.post('/quotes', (req, res) => {
 
 // update quote
 router.put('/quotes/:id', (req, res) => {
-  res.send({ type: 'PUT' });
+  const { id } = req.params
+  // return old quote
+  Quote.findByIdAndUpdate({ _id: id }, req.body).then(() => {
+    // get the updated quote
+    Quote.findOne({ _id: id }).then(updatedQuote => {
+      res.send(updatedQuote)
+    });
+  });
 });
 
 // delete quote 
