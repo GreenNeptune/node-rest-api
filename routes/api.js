@@ -2,48 +2,54 @@ const express = require('express');
 const router = express.Router();
 const Quote = require('../models/quote')
 
-//  get list of quotes 
-router.get('/quotes', (req, res) => {
-  Quote.find().then(quotes => {
-    res.send(quotes)
-  })
-})
-
-
-// get quote by id 
-router.get('/quotes/:id', (req, res) => {
-  const { id } = req.params;
-  Quote.findById({ "_id": id }).then(quote => {
-    res.send(quote);
-  });
-})
-
-// add quote to db 
-router.post('/quotes', (req, res) => {
-  // saving quote document to db
-  Quote.create(req.body).then(quote => {
-    res.send(quote)
-  });
+router.get('/quotes', async (req, res) => {
+  try {
+    const quotes = await Quote.find();
+    res.json(quotes)
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
 });
 
-// update quote
-router.put('/quotes/:id', (req, res) => {
-  const { id } = req.params
-  // return old quote
-  Quote.findByIdAndUpdate({ _id: id }, req.body).then(() => {
-    // get the updated quote
-    Quote.findOne({ _id: id }).then(updatedQuote => {
-      res.send(updatedQuote)
-    });
-  });
+router.get('/quotes/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const quote = await Quote.findById({ "_id": id });
+    res.json(quote);
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
 });
 
-// delete quote 
-router.delete('/quotes/:id', (req, res) => {
-  const { id } = req.params
-  Quote.findByIdAndRemove({ _id: id }).then(quote => {
-    res.send(quote)
-  });
+router.post('/quotes', async (req, res) => {
+  try {
+    const quote = await Quote.create(req.body);
+    res.status(201).json(quote)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+
+});
+
+router.put('/quotes/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const oldQuote = await Quote.findByIdAndUpdate({ _id: id }, req.body);
+    const updatedQuote = await Quote.findOne({ _id: id });
+    res.json(updatedQuote)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+});
+
+router.delete('/quotes/:id', async (req, res) => {
+  try {
+    const { id } = req.params
+    const quote = await Quote.findByIdAndRemove({ _id: id });
+    res.json(quote)
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
 });
 
 
