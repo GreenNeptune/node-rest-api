@@ -4,6 +4,7 @@ const express = require('express');
 const expressRouter = require ('./routes/api')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // create express app
 const app = express();
@@ -17,6 +18,7 @@ mongoose.Promise = global.Promise
 
 
 // body parser can be replace with app.use(express.json()) at express@4.16.0 package
+app.use(cors())
 app.use(bodyParser.json());
 
 // routes middleware 

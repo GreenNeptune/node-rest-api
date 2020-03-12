@@ -11,6 +11,8 @@ router.get('/quotes', async (req, res) => {
   }
 });
 
+
+
 router.get('/quotes/:id', async (req, res) => {
   try {
     const { id } = req.params;
